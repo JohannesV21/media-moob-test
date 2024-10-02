@@ -1,11 +1,12 @@
 import { getProducts } from "@/app/services/getProducts";
 import { pagination } from "@/models/paginationModels";
-import { Produtcs } from "@/models/productsModels";
+import { Products } from "@/models/productsModels";
+
 import { useEffect, useState } from "react";
 
 export const useGetProdutcs = ({ limit, offset }: pagination) => {
   const [isLoading, setisLoading] = useState<boolean>(false);
-  const [allProducts, setAllProducts] = useState<Produtcs[]>([]);
+  const [allProducts, setAllProducts] = useState<Products[]>([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -22,6 +23,8 @@ export const useGetProdutcs = ({ limit, offset }: pagination) => {
         setisLoading(false);
       }
     };
+
+    fetchProducts();
   }, []);
 
   return { isLoading, allProducts };

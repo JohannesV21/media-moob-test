@@ -2,6 +2,8 @@ import { pagination } from "@/models/paginationModels";
 import { BACK_URL, http } from "../config/http";
 
 export const getProducts = async ({ limit, offset }: pagination) => {
+  console.log({ offset, limit });
+
   try {
     const response = await http.get(
       `${BACK_URL}/products?offset=${offset}&limit=${limit}`
