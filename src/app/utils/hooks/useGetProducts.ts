@@ -1,18 +1,19 @@
 import { getProducts } from "@/app/services/getProducts";
-import { pagination } from "@/models/paginationModels";
 import { Products } from "@/models/productsModels";
-
 import { useEffect, useState } from "react";
 
-export const useGetProdutcs = ({ limit, offset }: pagination) => {
-  const [isLoading, setisLoading] = useState<boolean>(false);
+export const useGetProdutcs = ({ limit }: { limit: number }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [allProducts, setAllProducts] = useState<Products[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(0); // Página actual
+
+  const offset = (currentPage * limit).toString();
 
   useEffect(() => {
     const fetchProducts = async () => {
-      setisLoading(true);
+      setIsLoading(true);
       try {
-        const data = await getProducts({ limit, offset });
+        const data = await getProducts({ limit: limit.toString(), offset });
 
         if (data) {
           setAllProducts(data);
@@ -20,12 +21,12 @@ export const useGetProdutcs = ({ limit, offset }: pagination) => {
       } catch (error) {
         console.error("Error to get products from hook: ", error);
       } finally {
-        setisLoading(false);
+        setIsLoading(false);
       }
     };
 
     fetchProducts();
-  }, []);
+  }, [currentPage, limit]);
 
-  return { isLoading, allProducts };
+  return { isLoading, allProducts, currentPage, setCurrentPage };
 };
